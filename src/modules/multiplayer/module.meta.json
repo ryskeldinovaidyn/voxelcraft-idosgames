@@ -1,0 +1,30 @@
+{
+  "id": "multiplayer",
+  "type": "feature",
+  "summary": "The rooms system for any game: open rooms of the app's online games, public or private rooms by invite, members, ready and chat — the host takes the whole room into a game.",
+  "description": "A ready multiplayer lobby (engine Multiplayer) for ANY game, built on the @idosgames/react/ui kit, client.multiplayer and RealtimeSession (@idosgames/core/realtime). It OWNS the player's room and its WebRTC session: the rooms of the games this app plays online (each room remembers its game), 'Create a room' for one of them (name, 2/4/8 players, public or private with an invite code, the game's own room settings), joining by invite, members (host, ready, offline), 'Ready', the room chat (server relay, when the game has no chat of its own), removing a member and leaving. The host's 'Play' takes the whole room into the game: every device switches to the game's mode and the game gets the room in its start() — games never create, list or join rooms themselves. A game plays online by registering in ctx.multiplayer (registerGame: topology, chat mode, room size, joinInProgress for late joiners, room settings, start(room)); the lobby then draws 'With friends' next to its 'Play'. Opened with { mode } the screen shows one game's rooms, with { mode, create: true } straight on 'Create'. Registers the 'multiplayer' feature, shown while multiplayer is on for the title and the app has a game that plays online. Ships title-seed.json: multiplayer on, up to 8 players per room.",
+  "provides": [
+    "multiplayer rooms lobby",
+    "rooms of one game",
+    "public and private rooms by invite",
+    "room settings of the game",
+    "room members with ready and host",
+    "room chat",
+    "host starts the game for the whole room",
+    "late joiners into a running game"
+  ],
+  "tags": [
+    "multiplayer",
+    "rooms",
+    "lobby",
+    "realtime",
+    "social",
+    "ui",
+    "screen"
+  ],
+  "author": {
+    "name": "iDos Games",
+    "url": "https://idosgames.com"
+  },
+  "version": "0.1.1"
+}

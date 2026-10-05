@@ -1,0 +1,30 @@
+{
+  "id": "friends",
+  "type": "feature",
+  "inBase": true,
+  "summary": "Friends for any game: the friends list, requests, suggestions and the notification inbox, with a player card and add-by-ID in popups.",
+  "description": "A ready friends screen (Unity Runtime/UI/Friends) for ANY game, built on the @idosgames/react/ui kit and client.social. Tabs: friends, requests (incoming with accept / decline, and the ones you sent), suggestions (players active in this game lately) and news — the notification inbox (attacks, raids, new friends, sales, follows, likes, comments), opened as seen. The player's own ID sits on top with a copy button. Everything detailed is a popup: adding a friend by ID, the player card (level, power; message — opens the chat feature when chat is installed; remove friend; block) and the confirmations. When the title takes friends from idosgames.com only, requests, suggestions and 'Add' disappear and platform friends cannot be removed in the game. Registers the 'friends' feature; its badge counts requests waiting and unread news. No title settings needed.",
+  "provides": [
+    "friends list",
+    "incoming and sent friend requests",
+    "friend suggestions",
+    "notification inbox",
+    "add a friend by ID",
+    "player card with message, remove and block",
+    "friends badge"
+  ],
+  "tags": [
+    "friends",
+    "social",
+    "requests",
+    "inbox",
+    "notifications",
+    "ui",
+    "screen"
+  ],
+  "author": {
+    "name": "iDos Games",
+    "url": "https://idosgames.com"
+  },
+  "version": "0.1.1"
+}

@@ -1,0 +1,35 @@
+// Точка сборки поведений блоков: импорт частей регистрирует их в BEHAVIOURS.
+import "./basic";
+import "./gravity";
+import "./fire";
+import "./farming";
+import "./beyond";
+import "./redstone";
+import "./saplings";
+import "./rails";
+import "./bees";
+import "./city";
+import "./ocean";
+import "./camp";
+import "./sealife";
+import "./caves";
+import "./sculk";
+import "./dripstone";
+import "./archaeology";
+import "./mangrove";
+import "./sniffer";
+import "./trial";
+import "./copper";
+import "./decor";
+import "./spread";
+import "./composter";
+import "./sound";
+import "./hall";
+import "./display";
+import "./sign";
+import "./banner";
+import "./lectern";
+import "./extras";
+import "./stand";
+
+export { BEHAVIOURS } from "../blockBehaviour";

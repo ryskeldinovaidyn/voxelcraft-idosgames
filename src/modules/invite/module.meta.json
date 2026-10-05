@@ -1,0 +1,22 @@
+{
+  "id": "invite",
+  "type": "feature",
+  "inBase": true,
+  "summary": "Invite friends for any game: your code and link to share, friends who came by it, rewards for them, and entering a friend's code in a popup.",
+  "description": "A ready invite-a-friend screen (Unity V2/Runtime/UI/Referral) for ANY game, built on the @idosgames/react/ui kit and client.referral. The player's own short code (minted by the server when the screen opens) with 'Copy' and 'Share link' (the system share sheet, else the clipboard), how many friends came by it and the reward ladder for them (claim one or all). Entering a friend's code is a popup: it shows the newcomer's gift, reads the code the way the server does (8 letters, separators and case ignored) and pays the gift once. A player bound at login by an invite link sees 'You joined by a friend's code'. Registers the 'invite' feature — always shown in the lobby; while the title has invites off (Referral.IsEnabled, off by default) the screen says so and makes no request. Its badge counts invite rewards ready. Ships title-seed.json: a gift for the newcomer and rewards for 1, 3 and 5 friends.",
+  "provides": [
+    "own invite code and link",
+    "share or copy the invite",
+    "friends who came by your code",
+    "invite reward ladder with claim all",
+    "enter a friend's code popup",
+    "invite badge",
+    "demo referral rewards"
+  ],
+  "tags": ["referral", "invite", "friends", "growth", "social", "ui", "screen"],
+  "author": {
+    "name": "iDos Games",
+    "url": "https://idosgames.com"
+  },
+  "version": "0.1.1"
+}

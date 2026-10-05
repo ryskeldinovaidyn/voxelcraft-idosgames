@@ -1,0 +1,31 @@
+{
+  "id": "workshop",
+  "type": "feature",
+  "summary": "Workshop: players and the publisher share content (maps, levels, skins, models) — free, for in-game resources, or unlocked by holding items.",
+  "description": "A ready catalog of user-generated content for ANY game. Players publish what they made (a world, a level, a skin, any file the title allows), set how others get it — free, a price in in-game resources (several options at once, the author receives it minus commission), or 'hold N of this item / currency to unlock' (nothing is charged; while held or once) — and others browse, filter, acquire, open, like, favorite, follow authors and report. The publisher configures content types, formats, limits, commission and moderation in the Workshop section of the title config, curates featured collections and publishes official content from the dashboard. A game plugs its own content in by registering a handler with ctx.content.registerType({ type, label, listLocal, capture, open, modeId }) — the Workshop never imports the game. VoxelCraft registers 'voxelcraft.world'.",
+  "provides": [
+    "player-made content catalog (maps, levels, skins, models, any file type the title allows)",
+    "publish a map or level made in the game",
+    "sell content for in-game resources with author royalties minus commission",
+    "free content sharing",
+    "unlock content by holding an item or currency without spending it",
+    "likes, favorites and following content creators",
+    "report content and auto-hide after reports",
+    "publisher featured collections and official content",
+    "download and open shared content in the game"
+  ],
+  "tags": [
+    "workshop",
+    "ugc",
+    "user-generated-content",
+    "maps",
+    "levels",
+    "mods",
+    "sharing",
+    "marketplace",
+    "creators",
+    "social"
+  ],
+  "author": { "name": "iDos Games", "url": "https://idosgames.com" },
+  "version": "0.1.2"
+}

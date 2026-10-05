@@ -1,0 +1,81 @@
+import { makeT } from "@idosgames/react/ui";
+
+const EN = {
+  title: "Profile",
+  playerID: "Player ID",
+  copied: "Copied",
+  rename: "Change name",
+  newName: "New name",
+  save: "Save",
+  nameShort: "At least 3 characters",
+  nameLong: "At most 24 characters",
+  renamed: "Name changed",
+  settings: "Settings",
+  sound: "Sound",
+  volume: "Volume",
+  motion: "Fewer animations",
+  language: "Language",
+  tutorials: "Tutorials",
+  logout: "Log out",
+  logoutAsk:
+    "Log out of this device? A guest account is lost unless it is linked.",
+  delete: "Delete account",
+  deleteAsk:
+    "This deletes your progress in this game for good. Type the word to confirm:",
+  deleteWord: "DELETE",
+  deleted: "Account deleted",
+  on: "On",
+  off: "Off",
+  guest: "Guest",
+  wallets: "Wallets",
+  unlink: "Unlink",
+  unlinkTitle: "Unlink the wallet?",
+  unlinkAsk:
+    "The wallet will be taken off this account. For 7 days it cannot be linked to another account; you can link it back here at any time. If the game is played with a wallet, it closes until you link one.",
+  unlinked: "Wallet unlinked",
+  unlinkLogin: "You sign in with this wallet — it cannot be unlinked.",
+  unlinkTooMany:
+    "Too many wallets unlinked this week. Try again in a few days.",
+  unlinkMissing: "This wallet is no longer linked.",
+  loginWallet: "Sign-in wallet",
+} as const;
+
+export const t = makeT<keyof typeof EN>(EN, {
+  title: "Профиль",
+  playerID: "ID игрока",
+  copied: "Скопировано",
+  rename: "Сменить имя",
+  newName: "Новое имя",
+  save: "Сохранить",
+  nameShort: "Минимум 3 символа",
+  nameLong: "Максимум 24 символа",
+  renamed: "Имя изменено",
+  settings: "Настройки",
+  sound: "Звук",
+  volume: "Громкость",
+  motion: "Меньше анимации",
+  language: "Язык",
+  tutorials: "Обучение",
+  logout: "Выйти",
+  logoutAsk:
+    "Выйти на этом устройстве? Гостевой аккаунт без привязки будет потерян.",
+  delete: "Удалить аккаунт",
+  deleteAsk:
+    "Весь ваш прогресс в этой игре будет удалён навсегда. Чтобы подтвердить, введите слово:",
+  deleteWord: "УДАЛИТЬ",
+  deleted: "Аккаунт удалён",
+  on: "Вкл",
+  off: "Выкл",
+  guest: "Гость",
+  wallets: "Кошельки",
+  unlink: "Отвязать",
+  unlinkTitle: "Отвязать кошелёк?",
+  unlinkAsk:
+    "Кошелёк будет снят с этого аккаунта. 7 дней его нельзя привязать к другому аккаунту, а к этому — можно вернуть в любой момент. Если в игру играют с кошельком, она закроется, пока вы не привяжете другой.",
+  unlinked: "Кошелёк отвязан",
+  unlinkLogin: "Вы входите этим кошельком — его нельзя отвязать.",
+  unlinkTooMany:
+    "На этой неделе отвязано слишком много кошельков. Попробуйте через несколько дней.",
+  unlinkMissing: "Этот кошелёк уже не привязан.",
+  loginWallet: "Кошелёк входа",
+});

@@ -1,0 +1,60 @@
+{
+  "id": "voxelcraft",
+  "type": "template",
+  "uses": ["multiplayer", "workshop"],
+  "summary": "Minecraft-like voxel survival game: mine, craft, build, farm and fight from the first night to the dragon — with worlds generated from a picture + description (with or without AI).",
+  "description": "A first-person voxel game rendered in Three.js that follows Minecraft's mechanics 1:1 under its own names (every player-facing name lives in one table, so a commercial game can re-skin it; Minecraft names are accepted as aliases). Survival and creative modes: ores and tool tiers, crafting, smelting, armor, hunger, air and drowning, XP, enchanting, anvils, smithing, potions and beacons; farming, animals, taming and riding, fishing, boats and minecarts; villages with trading villagers, raids, and dozens of hostile and neutral mobs. Three dimensions — the overworld (biomes from deserts and jungles to the deep dark, caves, ocean temples, mansions, trial chambers, archaeology), the Inferno (Nether-like: fortresses, its own mobs and biomes) and the Beyond (End-like: citadel portal, the dragon boss, outer islands and cities, wings). Redstone (wire, torches, repeaters, comparators, pistons, observers, hoppers, dispensers, rails), weather, day/night, block light, fluids, achievements, generated music, a chat console with commands, and touch controls. The 'Create world' screen turns a reference picture and a text description into a world — locally in the browser (the picture read as a top-down map or as a mood, the text by keywords) or with InApp AI (client.ai, title feature \"voxel-world\") — via a compact WorldSpec recipe. Worlds autosave to 'My worlds'. The agent sees and drives the game through its debug surface (state, lookingAt, console commands). Covers any 'Minecraft clone', survival / crafting / mining game, block-building sandbox or 'generate a world from a picture' request; by far the largest feature module. Co-op multiplayer for up to 8 players through the lobby's rooms (the multiplayer module, ctx.multiplayer): the lobby shows 'With friends' next to the game's 'Play', and the pause menu's 'Play with friends' opens 'Create a room' there (public or by invite, room settings 'guest game mode' and 'commands for everyone'); the host's 'Play' takes the whole room into the host's world, late joiners included; in game the host grants operator, kicks and bans. Peer-to-peer over WebRTC (the SDK transport @idosgames/core/realtime, rooms and signaling on the engine's Multiplayer module; TURN relay from the engine when configured): each live dimension is simulated by one player and players may be in different dimensions at once; everyone's own inventory and progress stay theirs; when the host leaves or its tab dies the world moves to another player without stopping. Needs the title's Multiplayer section enabled (Host topology). Not included yet: AI-driven villagers and a dedicated server.",
+  "provides": [
+    "first-person voxel world: mine, place and break blocks",
+    "survival and creative modes (health, hunger, air, XP, death and respawn)",
+    "crafting, smelting, tool and armor tiers",
+    "enchanting, anvil, smithing, potions, beacon",
+    "farming, animals, taming and riding, fishing, boats",
+    "villages, trading villagers, raids",
+    "dozens of hostile and neutral mobs, bosses (dragon, ash lord)",
+    "three dimensions: overworld, Inferno (Nether-like), Beyond (End-like)",
+    "biomes, caves and structures (temples, mansions, fortresses, trial chambers, ruins)",
+    "redstone: wire, repeaters, comparators, pistons, observers, hoppers, rails and minecarts",
+    "weather, day/night cycle, block light and fluid simulation",
+    "achievements and procedurally generated music",
+    "chat console with commands (/give, /tp, /locate, /summon, …)",
+    "touch controls for mobile",
+    "world generation from a picture + description (WorldSpec recipe)",
+    "AI world generation via client.ai (feature \"voxel-world\")",
+    "AI builds objects from pictures out of coloured blocks (a plane, a car… — models of shapes)",
+    "AI recreates landscapes from pictures (terrain sketch, rivers, biomes)",
+    "co-op multiplayer up to 8 players (P2P over WebRTC) through the lobby's rooms (ctx.multiplayer), late joiners included",
+    "open the world to the network: invite code or public list, guest game mode, operators, kick and ban",
+    "players in different dimensions at once; host migration without stopping the world",
+    "autosave and 'My worlds' (IndexedDB)",
+    "own player-facing names for a re-skinnable commercial game (Minecraft names as aliases)",
+    "3D block rendering (Three.js)"
+  ],
+  "tags": [
+    "voxel",
+    "sandbox",
+    "survival",
+    "crafting",
+    "minecraft",
+    "3d",
+    "first-person",
+    "open-world",
+    "redstone",
+    "mobile",
+    "three",
+    "ai",
+    "world-generation",
+    "multiplayer",
+    "co-op"
+  ],
+  "media": {
+    "image": "https://cloud.idosgames.com/drive/modules/voxelcraft/cover.png",
+    "video": "https://cloud.idosgames.com/drive/modules/voxelcraft/demo.mp4"
+  },
+  "demoUrl": "https://cloud.idosgames.com/drive/modules/voxelcraft/demo/",
+  "author": {
+    "name": "iDos Games",
+    "url": "https://idosgames.com"
+  },
+  "version": "0.4.1"
+}

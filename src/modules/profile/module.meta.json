@@ -1,0 +1,30 @@
+{
+  "id": "profile",
+  "type": "feature",
+  "inBase": true,
+  "summary": "Profile and settings for any game: name and ID, sound, volume and motion, language, tutorials, log out and account deletion.",
+  "description": "A ready profile screen (Unity Alikhan/Username, UI/HUD/Settings, Runtime/UI/Consent, Localization) for ANY game, built on the @idosgames/react/ui kit. The player's name (rename in a popup with the server's rules: 3–24 characters, trimmed) and ID with copy; settings: sound on/off, volume and 'fewer animations' — the kit's player prefs, kept on this device and applied to every screen at once — the game's language (the title's languages, when there are two or more). Buttons: Tutorials (when tutorials is installed), Log out (confirmed) and Delete account — a popup that unlocks only after the player types the confirmation word, then deletes this game's data for the player. Registers the 'profile' feature; the lobby's profile button opens it. No title settings needed.",
+  "provides": [
+    "player name and ID",
+    "rename popup",
+    "sound, volume and fewer animations",
+    "language picker",
+    "log out",
+    "account deletion with confirmation"
+  ],
+  "tags": [
+    "profile",
+    "settings",
+    "account",
+    "sound",
+    "language",
+    "privacy",
+    "ui",
+    "screen"
+  ],
+  "author": {
+    "name": "iDos Games",
+    "url": "https://idosgames.com"
+  },
+  "version": "0.1.2"
+}

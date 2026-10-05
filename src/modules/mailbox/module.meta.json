@@ -1,0 +1,31 @@
+{
+  "id": "mailbox",
+  "type": "feature",
+  "inBase": true,
+  "summary": "Mailbox for any game: letters with rewards, publisher broadcasts, gifts from friends, resource transfers and missed rewards of other systems — with 'Claim all'.",
+  "description": "A ready mailbox screen for ANY game, built on the @idosgames/react/ui kit and client.mailbox. Tabs by category (all, rewards, gifts, system); a letter opens with its text in the player's language, the sender, a banner, the rewards and a button to the screen or page the letter links to. 'Claim' per letter and 'Claim all' in one server operation; rewards of other systems the player has not taken yet (leaderboard cycle, team event prize, invite rewards) are shown on top and claimed right here. 'Send gifts': a free daily gift to friends ('to everyone' in one tap) and a transfer of own coins or items to one friend — declined or expired transfers come back. 'Delete read' cleans up. The lobby badge counts unread letters and rewards waiting. The server owns everything: limits, friendship, expiry, what can be transferred. Opens straight on a friend with ctx.features.open('mailbox', { friendUserID, mode: 'gift' | 'transfer' }) — the friends system does that from a friend's card. Registers the 'mailbox' feature, hidden until the title turns the mailbox on. Ships title-seed.json: the mailbox on, a welcome template, a daily coin gift and coin/potion transfers.",
+  "provides": [
+    "mailbox screen",
+    "letters with rewards and claim all",
+    "publisher broadcasts in the inbox",
+    "gifts to friends",
+    "resource transfers between friends",
+    "missed rewards of other systems",
+    "mailbox badge"
+  ],
+  "tags": [
+    "mailbox",
+    "mail",
+    "inbox",
+    "gifts",
+    "rewards",
+    "social",
+    "ui",
+    "screen"
+  ],
+  "author": {
+    "name": "iDos Games",
+    "url": "https://idosgames.com"
+  },
+  "version": "0.1.0"
+}

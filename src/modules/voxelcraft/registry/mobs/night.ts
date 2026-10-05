@@ -1,0 +1,198 @@
+// Ещё враждебные верхнего мира: утопленник (зомби, что плавает и нападает в воде), ведьма (бросает
+// зелья вреда — снаряд potion), фантом (прилетает к тем, кто не спал три ночи, пикирует), чешуйница
+// (вылезает из заражённых блоков цитадели; сама не появляется).
+import type { MobDef } from "../../types";
+import { humanoid } from "./hostile";
+
+const FORWARD: [number, number, number] = [1.45, 0, 0];
+
+export const NIGHT_MOBS: Record<string, MobDef> = {
+  drowned: {
+    name: "drowned",
+    category: "hostile",
+    hp: 20,
+    walkSpeed: 1.2,
+    fleeSpeed: 2.3,
+    chaseSpeed: 2.3,
+    follow: 24,
+    box: { w: 0.6, h: 1.95 },
+    attack: { damage: 3, reach: 1.2, cooldown: 1 },
+    burnsInSun: true,
+    swims: true,
+    spawn: {
+      light: "dark",
+      medium: "water",
+      dimension: "overworld",
+      weight: 30,
+      group: [1, 2],
+    },
+    drops: [
+      { item: "rotten_flesh", n: 0, max: 2 },
+      { item: "copper_ingot", n: 1, chance: 0.11 },
+      { item: "nautilus_shell", n: 1, chance: 0.03 }, // как в Minecraft: утопленник держит раковину
+      { item: "trident", n: 1, chance: 0.085 }, // и изредка — трезубец
+    ],
+    xp: [5, 5],
+    parts: humanoid({
+      skin: "#5a9a8a",
+      shirt: "#3a6a6a",
+      pants: "#2a4a5a",
+      eyes: "#9af0ff",
+      armPose: FORWARD,
+    }),
+  },
+
+  witch: {
+    name: "witch",
+    category: "hostile",
+    hp: 26,
+    walkSpeed: 1.1,
+    fleeSpeed: 2.2,
+    chaseSpeed: 1.8,
+    follow: 16,
+    box: { w: 0.6, h: 1.95 },
+    ranged: {
+      damage: 6,
+      speed: 11,
+      cooldown: 3,
+      range: 10,
+      projectile: "potion",
+    },
+    spawn: { light: "dark", dimension: "overworld", weight: 5, group: [1, 1] },
+    drops: [
+      { item: "glass_bottle", n: 0, max: 2 },
+      { item: "redstone", n: 0, max: 2 },
+      { item: "glowstone_dust", n: 0, max: 2 },
+      { item: "sugar", n: 0, max: 2 },
+      { item: "spider_eye", n: 0, max: 2 },
+      { item: "gunpowder", n: 0, max: 2 },
+      { item: "stick", n: 0, max: 2 },
+    ],
+    xp: [5, 5],
+    parts: [
+      ...humanoid({
+        skin: "#b89a7a",
+        shirt: "#3a1a4a",
+        pants: "#2a1a3a",
+        eyes: "#40a040",
+      }),
+      {
+        name: "nose",
+        size: [1, 3, 1],
+        pos: [0, 26.5, -4.8],
+        pivot: [0, 24, 0],
+        anim: "head",
+        color: "#a88a6a",
+      },
+      {
+        name: "brim",
+        size: [10, 1, 10],
+        pos: [0, 32.5, 0],
+        pivot: [0, 24, 0],
+        anim: "head",
+        color: "#2a1a3a",
+      },
+      {
+        name: "hat",
+        size: [6, 5, 6],
+        pos: [0, 35.5, 0],
+        pivot: [0, 24, 0],
+        anim: "head",
+        color: "#2a1a3a",
+      },
+      {
+        name: "hatTip",
+        size: [3, 3, 3],
+        pos: [0, 39, 1],
+        pivot: [0, 24, 0],
+        anim: "head",
+        color: "#2a1a3a",
+      },
+    ],
+  },
+
+  phantom: {
+    name: "phantom",
+    category: "hostile",
+    hp: 20,
+    walkSpeed: 3,
+    fleeSpeed: 4,
+    chaseSpeed: 5,
+    follow: 48,
+    box: { w: 0.9, h: 0.5 },
+    attack: { damage: 2, reach: 1.2, cooldown: 1 },
+    flies: { height: 10 },
+    swoops: true,
+    burnsInSun: true,
+    spawn: {
+      light: "dark",
+      medium: "air",
+      insomnia: true,
+      dimension: "overworld",
+      weight: 40,
+      group: [1, 3],
+    },
+    drops: [{ item: "phantom_membrane", n: 0, max: 1 }],
+    xp: [5, 5],
+    parts: [
+      { name: "body", size: [5, 3, 9], pos: [0, 3, 0], color: "#3a4a7a" },
+      { name: "head", size: [7, 3, 5], pos: [0, 3.5, -6], color: "#3a4a7a" },
+      {
+        name: "eyeL",
+        size: [2, 1, 0.4],
+        pos: [-2, 4, -8.7],
+        color: "#8aff8a",
+        glow: true,
+      },
+      {
+        name: "eyeR",
+        size: [2, 1, 0.4],
+        pos: [2, 4, -8.7],
+        color: "#8aff8a",
+        glow: true,
+      },
+      {
+        name: "wingL",
+        size: [10, 1, 7],
+        pos: [-7.5, 4, 0],
+        pivot: [-2.5, 4, 0],
+        anim: "wingL",
+        color: "#4a5a8a",
+      },
+      {
+        name: "wingR",
+        size: [10, 1, 7],
+        pos: [7.5, 4, 0],
+        pivot: [2.5, 4, 0],
+        anim: "wingR",
+        color: "#4a5a8a",
+      },
+      { name: "tail", size: [3, 2, 6], pos: [0, 3, 7.5], color: "#3a4a7a" },
+    ],
+  },
+
+  silverfish: {
+    name: "silverfish",
+    category: "hostile",
+    hp: 8,
+    walkSpeed: 2,
+    fleeSpeed: 3,
+    chaseSpeed: 3,
+    follow: 16,
+    box: { w: 0.4, h: 0.3 },
+    attack: { damage: 1, reach: 0.9, cooldown: 1 },
+    drops: [],
+    xp: [5, 5],
+    parts: [
+      { name: "head", size: [3, 2, 2], pos: [0, 1, -3], color: "#8a8a92" },
+      { name: "body", size: [4, 3, 3], pos: [0, 1.5, -0.5], color: "#9a9aa2" },
+      { name: "tail", size: [2, 2, 3], pos: [0, 1, 2.5], color: "#7a7a82" },
+      {
+        name: "tailTip",
+        size: [1, 1, 2],
+        pos: [0, 0.5, 4.5],
+        color: "#6a6a72",
+      },
+    ],
+  },
+};

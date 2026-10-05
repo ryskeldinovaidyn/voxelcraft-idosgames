@@ -1,0 +1,1453 @@
+/* VoxelCraft HUD/UI. Пиксель-арт: image-rendering: pixelated везде, где иконки. */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #063d99;
+}
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  user-select: none;
+}
+
+#game {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ---------- HUD ---------- */
+#crosshair {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 5;
+}
+#crosshair::before,
+#crosshair::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.85);
+  mix-blend-mode: difference;
+}
+#crosshair::before {
+  left: 8px;
+  top: 0;
+  width: 2px;
+  height: 18px;
+}
+#crosshair::after {
+  left: 0;
+  top: 8px;
+  width: 18px;
+  height: 2px;
+}
+
+/* --idos-safe-top: высота общего HUD host'а (0 без него) — служебные строки не уходят под HUD. */
+#fps {
+  position: fixed;
+  top: calc(var(--idos-safe-top, 0px) + 8px);
+  right: 10px;
+  color: #7fff6a;
+  z-index: 5;
+  font: bold 13px monospace;
+  text-shadow: 1px 1px 0 #000;
+}
+#debug {
+  position: fixed;
+  top: calc(var(--idos-safe-top, 0px) + 8px);
+  left: 10px;
+  color: #ddd;
+  z-index: 5;
+  font: 11px monospace;
+  text-shadow: 1px 1px 0 #000;
+  opacity: 0.85;
+}
+#timeIndicator {
+  position: fixed;
+  top: calc(var(--idos-safe-top, 0px) + 26px);
+  right: 10px;
+  color: #ffe9a0;
+  z-index: 5;
+  font: bold 13px monospace;
+  text-shadow: 1px 1px 0 #000;
+}
+
+/* --idos-safe-bottom: высота нижней навигации host'а (0, когда режим один) — хотбар над ней. */
+#hotbar {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--idos-safe-bottom, 0px) + 8px);
+  transform: translateX(-50%);
+  display: flex;
+  gap: 3px;
+  z-index: 5;
+  padding: 3px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 2px solid #222;
+  border-radius: 4px;
+}
+.slot {
+  width: 44px;
+  height: 44px;
+  position: relative;
+  background: rgba(120, 120, 120, 0.35);
+  border: 2px solid #555;
+}
+.slot img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+.slot .count {
+  position: absolute;
+  right: 2px;
+  bottom: 0;
+  color: #fff;
+  pointer-events: none;
+  font: bold 13px monospace;
+  text-shadow: 1px 1px 0 #000;
+}
+.slot .dur {
+  position: absolute;
+  left: 4px;
+  bottom: 3px;
+  height: 3px;
+  display: none;
+  pointer-events: none;
+  box-shadow: 0 1px 0 #000;
+}
+#hotbar .slot.selected {
+  border-color: #fff;
+  background: rgba(200, 200, 200, 0.4);
+}
+
+/* сердечки — слева от центра, шкала голода — справа (как в Minecraft) */
+#xpBar {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(var(--idos-safe-bottom, 0px) + 60px);
+  width: min(400px, 90vw);
+  height: 6px;
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid #000;
+  z-index: 5;
+  pointer-events: none;
+}
+.xpFill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(#b8ff5a, #5ec21e);
+}
+#xpLevel {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(var(--idos-safe-bottom, 0px) + 64px);
+  color: #8aff3a;
+  font: bold 14px monospace;
+  text-shadow:
+    1px 1px 0 #000,
+    -1px -1px 0 #000;
+  z-index: 6;
+  pointer-events: none;
+}
+#hearts {
+  position: fixed;
+  right: calc(50% + 8px);
+  bottom: calc(var(--idos-safe-bottom, 0px) + 72px);
+  white-space: nowrap;
+  z-index: 5;
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 0 #000;
+}
+.heart {
+  color: #e03c3c;
+}
+.heart.half {
+  color: #e03c3c;
+  opacity: 0.55;
+}
+.heart.empty {
+  color: #3a3a3a;
+}
+
+#hunger {
+  position: fixed;
+  left: calc(50% + 8px);
+  bottom: calc(var(--idos-safe-bottom, 0px) + 72px);
+  white-space: nowrap;
+  z-index: 5;
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 0 #000;
+  direction: rtl; /* пустеет справа налево, как в MC */
+}
+.drumstick {
+  color: #c98a3c;
+}
+/* пузырьки воздуха над едой — под водой */
+#bubbles {
+  position: fixed;
+  left: calc(50% + 8px);
+  bottom: calc(var(--idos-safe-bottom, 0px) + 96px);
+  white-space: nowrap;
+  z-index: 5;
+  font-size: 15px;
+  color: #7ad0ff;
+}
+.bubble.empty {
+  opacity: 0;
+}
+.drumstick.half {
+  color: #c98a3c;
+  opacity: 0.55;
+}
+.drumstick.empty {
+  color: #3a3a3a;
+}
+
+#hurtFlash {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgba(255, 0, 0, 0.5)
+  );
+  opacity: 0;
+}
+#hurtFlash.show {
+  animation: hurt 0.4s ease-out;
+}
+@keyframes hurt {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+#message {
+  position: fixed;
+  left: 50%;
+  top: 30%;
+  transform: translateX(-50%);
+  color: #fff;
+  font: bold 18px monospace;
+  text-shadow: 2px 2px 0 #000;
+  z-index: 6;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+#message.show {
+  opacity: 1;
+}
+
+#tutorialHint {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--idos-safe-bottom, 0px) + 114px);
+  transform: translate(-50%, 8px);
+  width: max-content;
+  max-width: min(440px, calc(100vw - 24px));
+  padding: 8px 12px;
+  border: 1px solid rgba(252, 222, 142, 0.55);
+  border-radius: 5px;
+  background: rgba(26, 31, 27, 0.83);
+  color: #fff3d5;
+  text-align: center;
+  font: 13px/1.35 system-ui, sans-serif;
+  z-index: 9;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+}
+#tutorialHint.show { opacity: 1; transform: translate(-50%, 0); }
+
+#tutorialGuide {
+  position: fixed;
+  top: calc(var(--idos-safe-top, 0px) + 52px);
+  right: 12px;
+  z-index: 9;
+  width: min(300px, calc(100vw - 24px));
+  padding: 12px 14px;
+  border: 2px solid #e5c46e;
+  border-radius: 8px;
+  background: rgba(22, 29, 24, 0.94);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, .45);
+  color: #fff8e6;
+  font: 14px/1.4 system-ui, sans-serif;
+  pointer-events: none;
+}
+#tutorialGuide .tutorialGuideLabel {
+  color: #e5c46e;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  margin-bottom: 5px;
+}
+#tutorialGuide .tutorialGuideLabel span { float: right; }
+#tutorialGuide strong { display: block; font-size: 17px; margin-bottom: 4px; }
+#tutorialGuide p { color: #f4eedc; }
+
+.tutorialRecipe {
+  margin: 0 0 12px;
+  padding: 9px 10px;
+  border: 1px solid #9b8650;
+  border-radius: 4px;
+  background: #eee2bc;
+  color: #392d17;
+  font: 12px/1.4 system-ui, sans-serif;
+}
+.tutorialRecipe strong { display: block; margin-bottom: 3px; font-size: 13px; }
+.tutorialRecipe .ingredients { display: flex; gap: 10px; margin: 5px 0; flex-wrap: wrap; }
+.tutorialRecipe .missing { color: #8c3d25; font-weight: 600; }
+.tutorialRecipe .ready { color: #28642c; font-weight: 600; }
+.tutorialRecipe .recipeHelp { opacity: .85; }
+.tutorialCraftGlow { animation: tutorialGlow 1.5s ease-in-out 3; }
+@keyframes tutorialGlow { 50% { box-shadow: 0 0 0 4px rgba(248, 211, 93, .7); } }
+
+/* ---------- смерть, горение ---------- */
+#deathScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  background: rgba(120, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.deathPanel {
+  text-align: center;
+  color: #fff;
+  text-shadow: 2px 2px 0 #000;
+}
+.deathPanel h1 {
+  font-size: 46px;
+  margin-bottom: 8px;
+}
+.deathCause {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+.deathBtn {
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px 28px;
+  border-radius: 4px;
+  border: 2px solid #aaa;
+  background: #3a3f4d;
+  color: #eee;
+}
+.deathBtn:hover {
+  background: #4a5163;
+}
+#fireOverlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  background: radial-gradient(
+    ellipse at 50% 120%,
+    rgba(255, 140, 20, 0.75),
+    transparent 60%
+  );
+  transition: opacity 0.2s;
+}
+#fireOverlay.show {
+  opacity: 1;
+  animation: burn 0.35s infinite alternate;
+}
+@keyframes burn {
+  from {
+    filter: brightness(0.85);
+  }
+  to {
+    filter: brightness(1.2);
+  }
+}
+
+/* ---------- босс и титры ---------- */
+#bossBar {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(380px, calc(100% - 32px));
+  z-index: 6;
+  text-align: center;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+  font-size: 14px;
+  pointer-events: none;
+}
+.bossTrack {
+  margin-top: 4px;
+  height: 8px;
+  background: #3a1030;
+  border: 1px solid #000;
+}
+.bossFill {
+  height: 100%;
+  width: 100%;
+  background: #c040ff;
+}
+#creditsScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 36;
+  background: rgba(20, 10, 40, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.credits {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* ---------- чат / консоль ---------- */
+#chat {
+  position: fixed;
+  left: 10px;
+  bottom: calc(var(--idos-safe-bottom, 0px) + 96px);
+  width: min(520px, calc(100% - 20px));
+  z-index: 8;
+  pointer-events: none;
+  font: 13px monospace;
+  color: #fff;
+}
+.chatLog {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 40vh;
+  overflow: hidden;
+}
+.chatLine {
+  background: rgba(0, 0, 0, 0.45);
+  padding: 2px 6px;
+  text-shadow: 1px 1px 0 #000;
+  animation: chatFade 10s forwards;
+}
+#chat.open .chatLine {
+  animation: none;
+  opacity: 1;
+}
+@keyframes chatFade {
+  0%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.chatInput {
+  pointer-events: auto;
+  width: 100%;
+  margin-top: 4px;
+  padding: 6px 8px;
+  font: 14px monospace;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #888;
+  outline: none;
+}
+
+/* ---------- сенсорное управление ---------- */
+.touchUi {
+  position: fixed;
+  inset: 0;
+  z-index: 6; /* над канвасом и HUD, под инвентарём, чатом и оверлеем */
+  pointer-events: none;
+  touch-action: none;
+}
+.touchUi > * {
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.tLook {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 40%;
+}
+.tStick {
+  position: absolute;
+  left: 24px;
+  bottom: calc(var(--idos-safe-bottom, 0px) + 84px);
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+}
+.tKnob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 56px;
+  height: 56px;
+  margin: -28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.42);
+  pointer-events: none;
+}
+.tBtn {
+  position: absolute;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+  font:
+    bold 22px system-ui,
+    sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tBtn.on {
+  background: rgba(154, 223, 106, 0.5);
+}
+.tJump {
+  right: 24px;
+  bottom: calc(var(--idos-safe-bottom, 0px) + 96px);
+}
+.tSneak {
+  right: 24px;
+  bottom: calc(var(--idos-safe-bottom, 0px) + 172px);
+}
+.tAttack {
+  right: 100px;
+  bottom: calc(var(--idos-safe-bottom, 0px) + 134px);
+}
+.tUse {
+  right: 100px;
+  bottom: calc(var(--idos-safe-bottom, 0px) + 210px);
+}
+.tInv {
+  right: 12px;
+  top: calc(var(--idos-safe-top, 0px) + 48px);
+  width: 48px;
+  height: 48px;
+  font-size: 18px;
+}
+.tDrop {
+  right: 124px;
+  top: calc(var(--idos-safe-top, 0px) + 48px);
+  width: 48px;
+  height: 48px;
+  font-size: 18px;
+}
+.tChat {
+  right: 68px;
+  top: calc(var(--idos-safe-top, 0px) + 48px);
+  width: 48px;
+  height: 48px;
+  font-size: 18px;
+}
+/* на телефоне хотбар над зоной обзора: иначе тап по слоту крутил бы камеру */
+body.touch #hotbar {
+  z-index: 7;
+}
+
+/* ---------- инвентарь ---------- */
+#invScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.invPanel {
+  background: #c6c6c6;
+  border: 3px solid #555;
+  border-radius: 4px;
+  padding: 14px 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  max-height: calc(100dvh - var(--idos-safe-top, 0px) - var(--idos-safe-bottom, 0px) - 24px);
+  max-width: calc(100vw - 24px);
+  overflow: auto;
+}
+.invPanel h3 {
+  color: #3a3a3a;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+.invPanel .slot {
+  background: #8b8b8b;
+  border: 2px solid;
+  border-color: #373737 #fff #fff #373737;
+}
+.craftRow,
+.invTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+#craftGrid,
+.craftGrid {
+  display: grid;
+  gap: 3px;
+}
+.armorCol {
+  display: grid;
+  gap: 3px;
+  margin-right: 18px;
+}
+.chestGrid {
+  display: grid;
+  grid-template-columns: repeat(9, 44px);
+  gap: 3px;
+}
+.furnaceCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.flame {
+  width: 20px;
+  height: 20px;
+  background: #5a5a5a;
+  display: flex;
+  align-items: flex-end;
+}
+.flameFill {
+  width: 100%;
+  height: 0;
+  background: linear-gradient(#ffe27a, #f06a14);
+}
+.cookArrow {
+  width: 56px;
+  height: 14px;
+  background: #5a5a5a;
+  margin: 0 8px;
+}
+.cookFill {
+  height: 100%;
+  width: 0;
+  background: #f5f5f5;
+}
+.invGrid {
+  display: grid;
+  grid-template-columns: repeat(9, 44px);
+  gap: 3px;
+  margin-bottom: 10px;
+}
+.invHotbar {
+  display: grid;
+  grid-template-columns: repeat(9, 44px);
+  gap: 3px;
+}
+/* наковальня: цена в уровнях справа от результата */
+.anvilCost {
+  min-width: 110px;
+  font-size: 12px;
+  color: #2a6a2a;
+}
+
+/* стол зачарований: предмет и лазурит, три варианта; зачарованное — с фиолетовым отблеском */
+.enchCol {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.enchOffers {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 260px;
+}
+.enchOffer {
+  padding: 6px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #f0e8ff;
+  background: #4a3a6a;
+  border: 2px solid #2a1a40;
+}
+.enchOffer:hover {
+  background: #5a4a8a;
+}
+/* ткацкий станок: картинка знамени слева от названия узора */
+.loomOffers .enchOffer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.loomPic {
+  width: 24px;
+  height: 24px;
+  image-rendering: pixelated;
+  border: 1px solid #2a1a40;
+}
+/* карта сокровищ: крестик над кладом */
+.mapTreasure {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  color: #c02020;
+  font-weight: bold;
+  font-size: 14px;
+  text-shadow: 0 0 2px #fff;
+  pointer-events: none;
+}
+/* достижения: всплывашка справа сверху и список по L */
+#achToast {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  min-width: 220px;
+  padding: 8px 12px;
+  background: rgba(20, 20, 30, 0.88);
+  border: 2px solid #7a6a3a;
+  color: #fff;
+  font-size: 13px;
+  pointer-events: none;
+  z-index: 30;
+}
+#achToast .achHead {
+  color: #f0d060;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+#achList {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(560px, 92vw);
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 10px 14px;
+  background: rgba(16, 16, 24, 0.92);
+  border: 2px solid #555;
+  color: #ccc;
+  font-size: 13px;
+  z-index: 29;
+}
+#achList h3 {
+  margin: 0 0 8px;
+  color: #fff;
+}
+#achList .ach {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 3px 0;
+  border-bottom: 1px solid #2a2a36;
+}
+#achList .ach.done b {
+  color: #9ae07a;
+}
+#achList .ach span {
+  opacity: 0.7;
+  text-align: right;
+}
+.enchOffer.on {
+  outline: 2px solid #7ee8e0;
+}
+.beaconInfo {
+  font-size: 12px;
+  opacity: 0.85;
+  margin: 2px 0 4px;
+}
+/* Тление: сердца чернеют */
+#hearts.decay .heart {
+  filter: grayscale(1) brightness(0.4);
+}
+.enchOffer.off {
+  cursor: default;
+  color: #9a90a8;
+  background: #5a5560;
+}
+.slot.ench img {
+  filter: drop-shadow(0 0 3px #b060ff) saturate(1.3);
+}
+
+/* торговля с жителем: строки сделок с иконками, в тонах дерева */
+.tradeOffers {
+  max-height: 260px;
+  overflow-y: auto;
+}
+.tradeOffer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #5a4630;
+  border-color: #3a2a18;
+  color: #fff4e0;
+}
+.tradeOffer:hover {
+  background: #6e583c;
+}
+.tradeOffer img {
+  width: 20px;
+  height: 20px;
+  image-rendering: pixelated;
+}
+.tradeLeft {
+  margin-left: auto;
+  padding-left: 8px;
+  opacity: 0.75;
+}
+
+/* компас и часы в руке — у правого края хотбара */
+#gadget {
+  position: absolute;
+  bottom: 58px;
+  left: calc(50% + 200px);
+  min-width: 40px;
+  padding: 4px 8px;
+  text-align: center;
+  font: 16px/1.2 monospace;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 6px;
+  pointer-events: none;
+}
+#gadget .needle {
+  display: inline-block;
+  color: #e03030;
+  font-size: 22px;
+}
+
+/* карта в руке — справа над хотбаром */
+#mapView {
+  position: absolute;
+  right: 16px;
+  bottom: 70px;
+  width: min(256px, 40vw);
+  aspect-ratio: 1;
+  max-width: 100%;
+  border: 4px solid #8a6a40;
+  background: #d6be96;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+#mapView canvas {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+#mapView .mapMarker {
+  position: absolute;
+  color: #fff;
+  font-size: 14px;
+  text-shadow:
+    0 0 2px #000,
+    0 0 2px #000;
+}
+
+/* варочная стойка: ингредиент и топливо столбиком, три бутылки в ряд */
+.brewCol {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bottleRow {
+  display: flex;
+  gap: 6px;
+}
+/* эффекты зелий — под индикатором времени */
+#effects {
+  position: fixed;
+  top: calc(var(--idos-safe-top, 0px) + 34px);
+  right: 12px;
+  z-index: 5;
+  color: #fff;
+  font-size: 13px;
+  text-align: right;
+  text-shadow: 1px 1px 0 #000;
+  pointer-events: none;
+  white-space: pre;
+}
+
+/* креатив: поиск, палитра всех предметов, корзина */
+.creativeSearch {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 2px solid #555;
+  background: #fff;
+}
+.creativeGrid {
+  display: grid;
+  grid-template-columns: repeat(9, 44px);
+  gap: 3px;
+  max-height: calc(44px * 5 + 3px * 4);
+  overflow-y: auto;
+  margin-bottom: 12px;
+  padding-right: 4px;
+}
+.creativeGrid .slot {
+  cursor: pointer;
+}
+.trashLabel {
+  color: #3a3a3a;
+  font-size: 13px;
+}
+.slot.trash::before {
+  content: "🗑";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+#armorBar {
+  position: fixed;
+  right: calc(50% + 8px);
+  bottom: calc(var(--idos-safe-bottom, 0px) + 96px);
+  white-space: nowrap;
+  z-index: 5;
+  font-size: 16px;
+  letter-spacing: 3px;
+  text-shadow: 1px 1px 0 #000;
+}
+.armorPip {
+  color: #cfd6e0;
+}
+.armorPip.half {
+  opacity: 0.55;
+}
+.armorPip.empty {
+  color: #3a3a3a;
+}
+.arrow {
+  font-size: 26px;
+  color: #3a3a3a;
+}
+.slot.result {
+  width: 50px;
+  height: 50px;
+}
+#invGrid {
+  display: grid;
+  grid-template-columns: repeat(9, 44px);
+  gap: 3px;
+  margin-bottom: 10px;
+}
+#invHotbar {
+  display: grid;
+  grid-template-columns: repeat(9, 44px);
+  gap: 3px;
+}
+
+#cursorStack {
+  position: fixed;
+  z-index: 20;
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+#cursorStack img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+#cursorStack .count {
+  position: absolute;
+  right: 0;
+  bottom: -2px;
+  color: #fff;
+  font: bold 13px monospace;
+  text-shadow: 1px 1px 0 #000;
+}
+
+/* ---------- оверлей ---------- */
+#overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  cursor: pointer;
+  background: rgba(4, 32, 90, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#overlay .panel {
+  text-align: center;
+  color: #eee;
+  max-width: 560px;
+  padding: 20px;
+}
+#overlay h1 {
+  font-size: 44px;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+  color: #9adf6a;
+  text-shadow: 3px 3px 0 #2a4d1a;
+}
+#overlayHint {
+  font-size: 17px;
+  color: #ffd76a;
+  margin-bottom: 18px;
+}
+#overlay .controls {
+  text-align: left;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+#overlay .controls b {
+  color: #9adf6a;
+}
+#overlay .buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+#overlay button {
+  cursor: pointer;
+  font-size: 14px;
+  padding: 8px 14px;
+  border-radius: 4px;
+  border: 2px solid #666;
+  background: #3a3f4d;
+  color: #eee;
+}
+#overlay button:hover {
+  background: #4a5163;
+}
+#overlay button.accent {
+  background: #3d6b2a;
+  border-color: #9adf6a;
+}
+#overlay button.accent:hover {
+  background: #4c8535;
+}
+
+/* ---------- экран «Создать мир» ---------- */
+#worldScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 40; /* над оверлеем паузы */
+  background: rgba(4, 20, 50, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--idos-safe-top, 0px) + 12px) 12px
+    calc(var(--idos-safe-bottom, 0px) + 12px);
+  color: #eee;
+  font-size: 14px;
+  user-select: text;
+}
+.wsPanel {
+  background: #22283a;
+  border: 2px solid #4a5163;
+  border-radius: 8px;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.6);
+  width: min(880px, 100%);
+  max-height: 100%;
+  overflow: auto;
+}
+.wsHead {
+  display: flex;
+  gap: 4px;
+  padding: 8px 8px 0;
+  border-bottom: 1px solid #3a4157;
+}
+.wsTab,
+.wsClose {
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #aab3c8;
+  font-size: 14px;
+  padding: 8px 14px;
+  border-radius: 6px 6px 0 0;
+}
+.wsTab.active {
+  color: #9adf6a;
+  background: #2c3348;
+}
+.wsClose {
+  margin-left: auto;
+  font-size: 22px;
+  line-height: 1;
+}
+.wsBody {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 16px;
+}
+.wsForm {
+  flex: 1 1 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.wsPreview {
+  flex: 0 1 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+#wsMap {
+  width: 100%;
+  aspect-ratio: 1;
+  image-rendering: pixelated;
+  background: #10141f;
+  border: 2px solid #3a4157;
+  border-radius: 6px;
+}
+.wsLabel {
+  color: #ffd76a;
+  font-weight: 600;
+  margin-top: 4px;
+}
+.wsNote {
+  color: #8f99b0;
+  font-weight: normal;
+  font-size: 12px;
+}
+.wsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  align-items: center;
+}
+.wsRow label {
+  cursor: pointer;
+  white-space: nowrap;
+}
+.wsRow input[type="number"] {
+  width: 56px;
+}
+.wsDrop {
+  cursor: pointer;
+  min-height: 92px;
+  border: 2px dashed #5a6480;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8px;
+  color: #8f99b0;
+}
+.wsDrop.over {
+  border-color: #9adf6a;
+  background: rgba(154, 223, 106, 0.08);
+}
+.wsThumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+.wsThumb {
+  position: relative;
+}
+.wsThumb img {
+  height: 84px;
+  max-width: 140px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+.wsThumbX {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  line-height: 18px;
+  text-align: center;
+  border-radius: 50%;
+  background: #c0392b;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+#wsText {
+  width: 100%;
+  resize: vertical;
+  font: inherit;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #4a5163;
+  background: #161b28;
+  color: #eee;
+}
+.wsButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+#worldScreen button:not(.wsTab):not(.wsClose):not(.wsLink) {
+  cursor: pointer;
+  font-size: 14px;
+  padding: 8px 14px;
+  border-radius: 4px;
+  border: 2px solid #666;
+  background: #3a3f4d;
+  color: #eee;
+}
+#worldScreen button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+#worldScreen button.wsPrimary {
+  background: #3d6b2a;
+  border-color: #9adf6a;
+}
+.wsLink {
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #8fb8ff;
+  text-decoration: underline;
+  font-size: 12px;
+}
+.wsStatus {
+  min-height: 20px;
+  color: #b8e59a;
+}
+.wsStatus.error {
+  color: #ff8f80;
+}
+.wsInfo {
+  color: #cfd6e6;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.wsList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #aab3c8;
+}
+.wsItem {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  background: #2c3348;
+  border-radius: 6px;
+}
+.wsItem > div {
+  flex: 1;
+  min-width: 0;
+}
+.wsItem.current {
+  outline: 1px solid #9adf6a;
+}
+.wsItemName {
+  color: #eee;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wsItemMeta {
+  font-size: 12px;
+}
+
+/* Книга на кафедре (ui/BookScreen): страница пергамента поверх игры */
+.bookScreen {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  padding: 14px;
+  background: #e8dcb8;
+  color: #2a1c0e;
+  border: 3px solid #8a6a3a;
+  font-size: 13px;
+  z-index: 40;
+}
+.bookScreen.hidden {
+  display: none;
+}
+.bookTitle {
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.bookPage {
+  min-height: 180px;
+  line-height: 15px;
+  white-space: pre-wrap;
+}
+.bookPage.hidden,
+.bookNav.hidden {
+  display: none;
+}
+.bookEdit {
+  width: 100%;
+  height: 180px;
+  box-sizing: border-box;
+  background: #f4ecd0;
+  color: #2a1c0e;
+  border: 1px solid #8a6a3a;
+  font: 13px monospace;
+  resize: none;
+}
+.bookEdit.hidden {
+  display: none;
+}
+.bookNav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.bookBtn {
+  padding: 4px 10px;
+  cursor: pointer;
+  background: #8a6a3a;
+  color: #f4ecd0;
+  border: 1px solid #5a4020;
+}
+.bookBtn:hover {
+  background: #a07a44;
+}
+.bookCount {
+  flex: 1;
+  text-align: center;
+}
+.bookTitleInput {
+  flex: 1;
+  background: #f4ecd0;
+  color: #2a1c0e;
+  border: 1px solid #8a6a3a;
+  font: 13px monospace;
+  padding: 3px 5px;
+}
+
+/* ---------- сетевая игра (ui/NetUI) ---------- */
+#netScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(4, 20, 50, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--idos-safe-top, 0px) + 12px) 12px
+    calc(var(--idos-safe-bottom, 0px) + 12px);
+  color: #eee;
+  font-size: 14px;
+  user-select: text;
+}
+#netScreen.hidden,
+#netTabList.hidden,
+#netScreen .hidden {
+  display: none;
+}
+#netScreen .wsPanel {
+  width: min(620px, 100%);
+}
+#netScreen .wsForm button {
+  cursor: pointer;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 2px solid #666;
+  background: #3a3f4d;
+  color: #eee;
+}
+#netScreen .wsForm button.wsPrimary {
+  background: #3d6b2a;
+  border-color: #9adf6a;
+}
+#netScreen .wsForm button.wsLink {
+  padding: 0 4px;
+  border: none;
+  background: none;
+  color: #8fb8ff;
+}
+.netInput {
+  flex: none;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  font: inherit;
+  padding: 7px 8px;
+  border-radius: 6px;
+  border: 1px solid #4a5163;
+  background: #161b28;
+  color: #eee;
+}
+#netTabList {
+  position: absolute;
+  top: calc(var(--idos-safe-top, 0px) + 40px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  min-width: 240px;
+  max-width: calc(100% - 32px);
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  pointer-events: none;
+}
+.wsRow .netInput {
+  flex: 1 1 200px;
+  width: auto;
+}
+.netTabRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 2px 0;
+}
+.netTabPing {
+  color: #9adf6a;
+  font-size: 12px;
+}
